@@ -6,8 +6,17 @@ import pytz
 #画像ﾌｫﾙﾀﾞｰの場所をstaticで指定
 #app = Flask(__name__,static_folder='./img')
 app = Flask(__name__,static_folder='./img')
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/AHA02902/Desktop/2024作業実績/【徳洲会】HFWEBアプリ_おむつ管理/第2回/blog.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/AHA02902/Desktop/2024作業実績/【徳洲会】HFWEBアプリ_おむつ管理/第2回/blog.db'
+
+# Redisのホストを環境変数から取得
+redis_host=os.environ.get("redis_host","redis://localhost")
+r= redis.from_url(redis_host)
+
+#gptcode
+#redis_host = os.environ.get("REDIS_HOST", "redis://localhost")
+#redis_client = redis.StrictRedis.from_url(redis_host)
+
 
 db = SQLAlchemy(app)
 
