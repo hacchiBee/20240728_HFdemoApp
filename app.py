@@ -34,7 +34,7 @@ class Post(db.Model):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    if request.method == 'GET':
+    if request.method in ['GET', 'HEAD']:
         posts = Post.query.all()
         return render_template('index.html', posts=posts, formatted_date=formatted_date)
     elif request.method == 'POST':
