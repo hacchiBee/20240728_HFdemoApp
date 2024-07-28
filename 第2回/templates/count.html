@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+{% set page = 'count' %}
+{% block content %}
+<style>
+    /* スタイルの設定 */
+    body {
+        margin: 0;
+        padding: 0;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    text {
+        height: 5%;
+        font-weight: bold;
+    }
+
+    .container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 10px;
+        width: 100%;
+        height: 72%;
+    }
+
+    row {
+        width: 33%;
+        margin: 0px;
+    }
+
+    .button {
+        position: relative; /* イメージを含むボタンを相対位置にする */
+        height: 30%;
+        padding: 5px;
+        margin: 10px;
+        border: none;
+        color: black;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+        border-radius: 10px;
+        width: 80%;
+        }
+
+    .button img {
+        position: absolute; /* イメージを絶対位置にする */  
+        top: 50%; /* 上端を中央に */
+        left: 50%; /* 左端を中央に */
+        transform: translate(-50%, -50%); /* 中央揃え */
+        width: 60%;
+        height: 60%;
+        transition: transform 0.3s ease;
+        @media screen and (min-width: 500px) {
+            width: 30%; /* 幅を100pxに変更 */
+        }
+        @media screen and (min-width: 750px) {
+            height: 65%; /* 幅を100pxに変更 */
+            width: auto;
+        }
+    }
+
+    .button .count {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        font-size: 30px;
+        font-size: medium;
+    }
+
+    .button .size-text{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        font-size: medium;
+    }
+
+    #total-count {
+
+        font-weight: bold;
+        text-align: center;
+        height: 8%;
+        margin-top: 3px;
+    }
+    #total-text{
+        font-size: x-small;
+        text-align: right;
+    }
+
+    #room{
+        text-align: center;
+        font-weight: bold;
+    }
+
+    #ok-button {
+        width: 150px;
+        height: 75%;
+        @media screen and (max-width: 600px) {
+            width: 85px; /* 幅を100pxに変更 */
+        }
+        font-weight: bold;
+        -webkit-transform: skew(0);
+        transform: skew(0);
+        color: #fff;
+         border-radius: 0;
+         background-image: -webkit-gradient(linear, left top, right top, from(#0ea800b0), to(#d8f33e));
+         background-image: -webkit-linear-gradient(left, #d8f33e 0%, #0ea800b0 100%);
+         background-image: linear-gradient(to right, #d8f33e 0%, #0ea800b0 100%);
+         -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
+         box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
+    }
+    #clear-button{
+        width: 150px;
+        height: 75%;
+        @media screen and (max-width: 600px) {
+            width: 85px; /* 幅を100pxに変更 */
+        }
+        font-weight: bold;
+        -webkit-transform: skew(0);
+        transform: skew(0);
+        color: #fff;
+         border-radius: 0;
+         background-image: -webkit-gradient(linear, left top, right top, from(#2af598), to(#009efd));
+         background-image: -webkit-linear-gradient(left, #2af598 0%, #009efd 100%);
+         background-image: linear-gradient(90deg, #2af598 0%, #009efd 100%);
+         -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
+         box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
+    }
+
+    #ok-button.enabled {
+        background-color: #ffff00;
+        cursor: pointer;
+    }
+
+    #current-time {
+        text-align: center;
+        height: 5%;
+    }
+
+    .button:active {
+        background-color: #5a5a5a;
+        color:#ffffff;
+        font-weight: bold;
+    }
+</style>
+    <div class="text" id="room">部屋番号：{{post.room_num}}号室 {{ post.user_name }}様 </div>
+    <div id="total-count">
+        
+        <button id="clear-button" onclick="clearTotal()">クリア</button>
+        <button id="ok-button" button type="button" >登録</button>
+        <span id="total-text">合計: <span id="total">0</span>枚</span>
+    </div> 
+
+    <div class="container">
+        <div class="row">
+            <button class="button" id="button-1" onclick="incrementCount(1)" style="background-color: #dbeef4;">
+                <span class="size-text">S</span>
+                <img src="../img/kamipantu/図14.png" alt="イラスト画像1" />
+                <span class="count" id="count-1">0 枚</span>
+            </button>
+            <button class="button" id="button-2" onclick="incrementCount(2)" style="background-color: #ebf1de;">
+                <span class="size-text">S</span>
+                <img src="../img/kamipantu/図15.png" alt="イラスト画像2" />
+                <span class="count" id="count-2">0 枚</span>
+            </button>
+            <button class="button" id="button-3" onclick="incrementCount(3)"style="background-color: #fdeada;">
+                <span class="size-text">S</span>
+                <img src="../img/kamipantu/図16.png" alt="イラスト画像3" />
+                <span class="count" id="count-3">0 枚</span>
+            </button>
+        </div>
+        <div class="row">
+            <button class="button" id="button-4" onclick="incrementCount(4)"style="background-color: #b7dee8;">
+                <img src="../img/kamipantu/図14.png" alt="イラスト画像4" />
+                <span class="count" id="count-4">0 枚</span>
+                <span class="size-text">M</span>
+            </button>
+            <button class="button" id="button-5" onclick="incrementCount(5)"style="background-color: #d7e4bd;">
+                <img src="../img/kamipantu/図15.png" alt="イラスト画像5" />
+                <span class="count" id="count-5">0 枚</span>
+                <span class="size-text">M</span>
+            </button>
+            <button class="button" id="button-6" onclick="incrementCount(6)"style="background-color: #fcd5b5;">
+                <img src="../img/kamipantu/図16.png" alt="イラスト画像6" />
+                <span class="count" id="count-6">0 枚</span>
+                <span class="size-text">M</span>
+            </button>
+        </div>
+        <div class="row">
+            <button class="button" id="button-7" onclick="incrementCount(7)"style="background-color: #93cddd;">
+                <img src="../img/kamipantu/図14.png" alt="イラスト画像7" />
+                <span class="count" id="count-7">0 枚</span>
+                <span class="size-text">L</span>
+            </button>
+            <button class="button" id="button-8" onclick="incrementCount(8)"style="background-color: #c3d69b;">
+                <img src="../img/kamipantu/図15.png" alt="イラスト画像8">
+                <span class="count" id="count-8">0 枚</span>
+                <span class="size-text">L</span>
+            </button>
+            <button class="button" id="button-9" onclick="incrementCount(9)"style="background-color: #fac090;">
+                <img src="../img/kamipantu/図16.png" alt="イラスト画像9" />
+                <span class="count" id="count-9">0 枚</span>
+                <span class="size-text">L</span>
+            </button>
+        </div>
+    </div>
+
+
+    <!-- スクリプト -->
+    <script>
+        // 各ボタンのクリック回数を記録する変数
+        var counts = {};
+
+        // カウントを増やす関数
+        function incrementCount(buttonId) {
+            // ボタンが初めてクリックされた場合、カウントを1に初期化
+            if (!counts[buttonId]) {
+                counts[buttonId] = 0;
+            }
+            // ボタンが押されたらカウントをインクリメントする
+            var countElement = document.getElementById("count-" + buttonId);
+            var currentCount = parseInt(countElement.innerText);
+            var newCount = currentCount + 1;
+            countElement.innerText = newCount + " 枚";
+
+
+            // カウントを増やす
+            counts[buttonId]++;
+            // 合計カウントを計算し表示
+            var totalCount = Object.values(counts).reduce((a, b) => a + b, 0);
+            document.getElementById("total").textContent = totalCount;
+        }
+
+        function clearTotal() {
+            var countElements = document.querySelectorAll('.count');
+            countElements.forEach(function(element) {
+                element.innerText = '0 枚';
+            });
+            counts={};//初期化
+            updateTotal();
+        }
+
+        function updateTotal() {
+            var counts = document.querySelectorAll('.count');
+            var total = 0;
+            counts.forEach(function(count) {
+                total += parseInt(count.innerText);
+            });
+            document.getElementById('total').innerText = total;
+        }
+
+        function registerCounts() {
+            // ここにPOSTリクエストを送信する処理を追加する
+            // 例:
+            // fetch('/submit', {
+            //     method: 'POST',
+            //     body: JSON.stringify({ counts: counts }),
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     }
+            // }).then(function(response) {
+            //     // レスポンスの処理を記述する
+            // }).catch(function(error) {
+            //     console.error('Error:', error);
+            // });
+        }
+    </script>
+{% endblock %}
+
+
+
+
+
+
+    
+</html>

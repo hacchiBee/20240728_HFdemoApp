@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% set page = 'update' %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h1>RFID番号 {{post.id}}　には利用者情報が既に登録されています。</h1>
+            <form method="POST">
+                <div class="mb-3">
+                    <label for="title" class="form-label">部屋番号</label>
+                    <input type="text" class="form-control" id="room_num" name="room_num" value={{ post.room_num }}>
+                </div>
+                <div class="mb-3">
+                    <label for="body" class="form-label">氏名</label>
+                    <input type="text" class="form-control" id="user_name" name="user_name" value={{ post.user_name }}>
+                </div>
+                <!-- エラーメッセージを表示する -->
+                {% if error_message %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <div class="d-flex align-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="bi flex-shrink-0 me-2" width="24" height="24" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M7.879 1.573a1.134 1.134 0 0 0-1.758-.006L.222 13.261a.75.75 0 0 0 .63 1.128h13.263a.75.75 0 0 0 .63-1.128L7.879 1.573zm.003 1.222l5.374 9.37H2.508L7.882 2.795z"/>
+                                <path fill-rule="evenodd" d="M8 5.25a.75.75 0 0 1 .75.75v4.5a.75.75 0 1 1-1.5 0v-4.5a.75.75 0 0 1 .75-.75zm.75 6a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0z"/>
+                            </svg>
+                            <div>
+                                {{ error_message }}
+                            </div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+                <button type="submit" class="btn btn-primary">更新</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
